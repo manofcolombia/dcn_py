@@ -14,7 +14,13 @@ ENV UV_COMPILE_BYTECODE=1
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y \
+    git \
+    gcc \
+    build-essential \
+    # Install netcat for wait-for-it.sh
+    netcat-openbsd \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
