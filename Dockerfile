@@ -19,8 +19,6 @@ RUN apt-get update && apt-get install -y \
     git \
     gcc \
     build-essential \
-    # Install netcat for wait-for-it.sh
-    netcat-openbsd \
     curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
