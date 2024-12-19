@@ -1,10 +1,11 @@
-FROM python:3.12.7-slim-bookworm
+FROM python:3.12.8-alpine3.21
 
 LABEL maintainer="manofcolombia"
 
-ARG USERNAME=dcn
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ENV USER=dcn
+ENV GROUPNAME=$USER
+ENV UID=1000
+ENV GID=$UID
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -15,22 +16,25 @@ ENV UV_PYTHON_PREFERENCE=system
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-RUN apt-get update && apt-get install -y \
-    git \
-    gcc \
-    build-essential \
-    curl \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk update \
+    && apk add git curl
 
 # add globalsign non public cert chain to image
 COPY ./certs/gsintranetsslsha256g3.crt /usr/local/share/ca-certificates/
 COPY ./certs/gsnonpublicroot2.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && mkdir /app \
-    && chown dcn:dcn /app
+RUN addgroup \
+    --gid "$GID" \
+    "$GROUPNAME" \
+&&  adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/app" \
+    --ingroup "$GROUPNAME" \
+    --no-create-home \
+    --uid "$UID" \
+    $USER
 
-USER dcn
+USER $USER
 WORKDIR /app
