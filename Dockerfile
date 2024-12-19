@@ -17,7 +17,7 @@ ENV UV_PYTHON_PREFERENCE=system
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 RUN apk update \
-    && apk add git curl
+    && apk add git curl gcc musl-dev python3-dev
 
 # add globalsign non public cert chain to image
 COPY ./certs/gsintranetsslsha256g3.crt /usr/local/share/ca-certificates/
