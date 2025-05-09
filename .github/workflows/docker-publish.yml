@@ -9,11 +9,11 @@ on:
   schedule:
     - cron: '26 12 * * *'
   push:
-    branches: [ "main", "dev", "alpine" ]
+    branches: [ "main", "dev", "alpine", "alpine_lite" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main", "dev", "alpine" ]
+    branches: [ "main", "dev", "alpine", "alpine_lite" ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -41,7 +41,7 @@ jobs:
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
+        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 # v3.5.0
         with:
           cosign-release: 'v2.2.4'
 
