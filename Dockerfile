@@ -1,4 +1,4 @@
-FROM python:3.12.10-slim-bookworm
+FROM python:3.14.0-slim-trixie
 
 LABEL maintainer="manofcolombia"
 
