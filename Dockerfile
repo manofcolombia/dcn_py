@@ -1,5 +1,4 @@
-FROM python:3.12.12-slim-trixie
-
+FROM python:3.12.10-slim-bookworm
 LABEL maintainer="manofcolombia"
 
 ARG USERNAME=dcn
